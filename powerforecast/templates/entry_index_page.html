@@ -1,0 +1,14 @@
+                  {% load endless %}
+                  {% paginate commentary_list %}
+                  {% for c in commentary_list %}
+                  <div class="timeline-item">
+                    <div class="row">
+                      <div class="col-xs-2 date">{{ c.publish_datetime }}</div>
+                      <div class="col-xs-9 content no-top-border">
+                        <p class="m-b-xs"><strong>{{ c.subject }}</strong></p>
+                        <p>{{ c.content }}</p>
+                      </div>
+                    </div><!--end row-->
+                  </div><!--end timeline item-->
+                  {% endfor %}
+              {% show_more %}           

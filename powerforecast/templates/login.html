@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Observ Commodities | Login</title>
+
+    {% load static %}
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="{{ STATIC_URL }}css/animate.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">O</h1>
+
+            </div>
+            <h3>Observ Commodities</h3>
+            <p>Refine your trading hunch with forecasting tools</p>
+
+            <form class="m-t" role="form" action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+                <a href="mailto:kwang@observcmd.com?Subject=I Forgot My Password. Help!"><small>Forgot password?</small></a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="{{ STATIC_URL }}js/jquery-2.1.1.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

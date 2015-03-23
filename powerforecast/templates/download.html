@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Add Your favicon here -->
+    <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico">
+    <title>Observ Commodities</title>
+
+    {% load static %}
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/animate.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+          <ul class="nav" id="side-menu">
+            <li class="nav-header">
+              <div class="dropdown profile-element"> <span>
+                <h2> Observ Commodities </h2>
+              </span>
+
+            </div>
+          </li>
+          <li>
+            <a href="{% url 'wheel' %}"><i class="fa fa-bullseye"></i> <span class="nav-label">Training Wheel</span></a>
+          </li>
+          <li>
+            <a href="{% url 'index' %}"><i class="fa fa-lightbulb-o"></i> <span class="nav-label">Power Demand Forecast</span> </a>
+          </li>
+          <li>
+            <a href="{% url 'fcchange' %}"><i class="fa fa-gears"></i> <span class="nav-label">Forecast Change</span></a>
+          </li>
+          <li>
+            <a href="{% url 'nearterm' %}"><i class="fa fa-fire"></i> <span class="nav-label">Near-term Estimates</span> </a>
+          </li>
+          <li>
+            <a href="{% url 'risk' %}"><i class="fa fa-sliders"></i> <span class="nav-label">Risk Distribution</span> </a>
+          </li>
+          <li class="active">
+            <a href="{% url 'download' %}"><i class="fa fa-cloud-download"></i> <span class="nav-label">Data Download</span></a>
+          </li>
+          <li>
+            <a href="{% url 'upload' %}"><i class="fa fa-upload"></i> <span class="nav-label">Price Scenerios</span> </a>
+          </li>
+
+        </ul>
+
+      </div>
+    </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+          <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+              <div class="ibox-title">
+                <h5>Download Model Output</h5>
+                <div class="ibox-tools">
+                  <a href="mailto:wchien@observcmd.com?Subject=Something%20is%20broken!">
+                    <i class="fa fa-ambulance"></i> Something Broken? <i class="fa fa-medkit"></i>
+                  </a>
+                  <a href="login.html">
+                    Log out <i class="fa fa-sign-out"></i>
+                  </a>
+                </div>
+              </div>
+            </nav>
+          </div>
+
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-table fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <h2 class="font-bold">Monthly Forecast</h2>
+                            <span> By State, Nominal </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                      <div class="col-xs-4">
+                        <i class="fa fa-table fa-5x"></i>
+                      </div>
+                      <div class="col-xs-8 text-right">
+                        <h2 class="font-bold">Monthly Forecast</h2>
+                        <span> By Region, Nominal </span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                          <h2 class="font-bold">Weather Scenarios</h2>
+                          <span>10 years </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="widget style1 navy-bg">
+              <div class="row">
+                <div class="col-xs-4">
+                  <i class="fa fa-table fa-5x"></i>
+                </div>
+                <div class="col-xs-8 text-right">
+                  <h2 class="font-bold">Monthly Forecast</h2>
+                  <span> By State, Year-on-Year </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="widget style1 lazur-bg">
+              <div class="row">
+                <div class="col-xs-4">
+                  <i class="fa fa-table fa-5x"></i>
+                </div>
+                <div class="col-xs-8 text-right">
+                  <h2 class="font-bold">Monthly Forecast</h2>
+                  <span> By Region, Year-on-Year </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="widget style1 blue-bg">
+              <div class="row">
+                <div class="col-xs-4">
+                  <i class="fa fa-bar-chart-o fa-5x"></i>
+                </div>
+                <div class="col-xs-8 text-right">
+
+                  <h2 class="font-bold">Forecast Changes</h2>
+                  <span> Compare to Past Month </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="footer">
+            <div class="pull-right">
+                <strong>Copyright</strong> Observ Commodities &copy; 2015
+            </div>
+        </div>
+
+        </div>
+        </div>
+
+    <!-- Mainly scripts -->
+    <script src="{{ STATIC_URL }}js/jquery-2.1.1.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-ui-1.10.4.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ STATIC_URL }}js/inspinia.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/pace/pace.min.js"></script>
+
+
+</body>
+
+</html>

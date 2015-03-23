@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Add Your favicon here -->
+    <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico">
+    <title>Observ Commodities</title>
+    {% load humanize %}
+    {% load render_table from django_tables2 %}
+    {% load static %}
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="{{ STATIC_URL }}css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+
+    <link href="{{ STATIC_URL }}css/animate.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                            <h2> Observ Commodities </h2>
+                             </span>
+
+                    </div>
+                </li>
+                <li>
+                    <a href="{% url 'wheel' %}"><i class="fa fa-bullseye"></i> <span class="nav-label">Training Wheel</span></a>
+                </li>
+                <li>
+                    <a href="{% url 'index' %}"><i class="fa fa-lightbulb-o"></i> <span class="nav-label">Power Demand Forecast</span> </a>
+                </li>
+                <li>
+                  <a href="{% url 'fcchange' %}"><i class="fa fa-gears"></i> <span class="nav-label">Forecast Change</span></a>
+                </li>
+                <li>
+                    <a href="{% url 'nearterm' %}"><i class="fa fa-fire"></i> <span class="nav-label">Near-term Estimates</span> </a>
+                </li>
+                <li class ="active">
+                  <a href="{% url 'weather' %}"><i class="fa fa-sun-o"></i> <span class="nav-label">Weather Scenario</span> </a>
+                </li>
+                <li>
+                    <a href="{% url 'download' %}"><i class="fa fa-cloud-download"></i> <span class="nav-label">Data Download</span></a>
+                </li>
+                <li>
+                  <a href="{% url 'upload' %}"><i class="fa fa-upload"></i> <span class="nav-label">Price Scenerios</span> </a>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+          <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+              <div class="ibox-title">
+                <h5>Different Weather Scenarios</h5>
+                <div class="ibox-tools">
+
+                  <a href="mailto:wchien@observcmd.com?Subject=Something%20is%20broken!">
+                    <i class="fa fa-ambulance"></i> Something Broken? <i class="fa fa-medkit"></i>
+                  </a>
+                  <a href="login.html">
+                    Log out <i class="fa fa-sign-out"></i>
+                  </a>
+                </div>
+              </div>
+            </nav>
+          </div>
+
+
+        <div class="row  border-bottom white-bg dashboard-header">
+            <div class="flot-chart dashboard-chart">
+              <div class="flot-chart-content" id="weather-chart"></div>
+            </div>
+        </div>
+
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Weather Scenarios</h5>
+                    </div>
+                    <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                    <thead>
+                    <tr>
+                        <th class="text-center">Weather Scenario Year</th>
+                        {% for p in prediction_date_list %}
+                        <th class="text-center">{{p.date|date:"M y"}}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gradeX">
+                        <td class="text-center">2014</td>
+                        {% for v in analogue_list1 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeC">
+                        <td class="text-center">2013</td>
+                        {% for v in analogue_list2 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2012</td>
+                        {% for v in analogue_list3 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2011</td>
+                        {% for v in analogue_list4 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2010</td>
+                        {% for v in analogue_list5 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2009</td>
+                        {% for v in analogue_list6 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2008</td>
+                        {% for v in analogue_list7 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2007</td>
+                        {% for v in analogue_list8 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2006</td>
+                        {% for v in analogue_list9 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr class="gradeA">
+                        <td class="text-center">2005</td>
+                        {% for v in analogue_list10 %}
+                        <td class="text-center">{{v.value|intcomma}}</td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                    </table>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="row  border-bottom white-bg dashboard-header">
+                    <div class="flot-chart dashboard-chart">
+                      <div class="flot-chart-content" id="weather-chart"></div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            </div>
+
+        <div class="footer">
+            <div class="pull-right">
+                <strong>Copyright</strong> Observ Commodities &copy; 2015
+            </div>
+        </div>
+
+        </div>
+        </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{{ STATIC_URL }}js/jquery-2.1.1.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/jeditable/jquery.jeditable.js"></script>
+
+    <!-- Data Tables -->
+    <script src="{{ STATIC_URL }}js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ STATIC_URL }}js/inspinia.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/pace/pace.min.js"></script>
+
+    <!--Dygraph-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.0/dygraph-combined.js"></script>
+
+
+    <!-- Page-Level Scripts -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.dataTables-example').dataTable({
+                responsive: true,
+                paging:false,
+                searching: false,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "{{ STATIC_URL }}js/plugins/dataTables/swf/copy_csv_xls_pdf.swf",
+                    "aButtons": [ "copy", "csv", "xls" ]
+                }
+            });
+
+            <!--Dygraph Settings-->
+            var w1 = [], w2 = [], w3 = [], w4 = [], w5 = [], w6 = [], w7 = [], w8 = [], w9 = [], w10 = [];
+            var weather1 = {{ weather_scenario_list1|safe }};
+            var weather2 = {{ weather_scenario_list2|safe }};
+            var weather3 = {{ weather_scenario_list3|safe }};
+            var weather4 = {{ weather_scenario_list4|safe }};
+            var weather5 = {{ weather_scenario_list5|safe }};
+            var weather6 = {{ weather_scenario_list6|safe }};
+            var weather7 = {{ weather_scenario_list7|safe }};
+            var weather8 = {{ weather_scenario_list8|safe }};
+            var weather9 = {{ weather_scenario_list9|safe }};
+            var weather10 = {{ weather_scenario_list10|safe }};
+            for (var i = 0; i < weather1.length; i++) {
+                if(w1.length == 0){
+                    var t = new Date (weather1[i]);
+                    w1.push(t);
+                }
+                else{
+                    w1.push(weather1[i]);
+                }
+            }
+            for (var i = 0; i < weather2.length; i++) {
+                if(w2.length == 0){
+                    var t = new Date (weather2[i]);
+                    w2.push(t);
+                }
+                else{
+                    w2.push(weather2[i]);
+                }
+            }
+            for (var i = 0; i < weather3.length; i++) {
+                if(w3.length == 0){
+                    var t = new Date (weather3[i]);
+                    w3.push(t);
+                }
+                else{
+                    w3.push(weather3[i]);
+                }
+            }
+            for (var i = 0; i < weather4.length; i++) {
+                if(w4.length == 0){
+                    var t = new Date (weather4[i]);
+                    w4.push(t);
+                }
+                else{
+                    w4.push(weather4[i]);
+                }
+            }
+            for (var i = 0; i < weather5.length; i++) {
+                if(w5.length == 0){
+                    var t = new Date (weather5[i]);
+                    w5.push(t);
+                }
+                else{
+                    w5.push(weather5[i]);
+                }
+            }
+            for (var i = 0; i < weather6.length; i++) {
+                if(w6.length == 0){
+                    var t = new Date (weather6[i]);
+                    w6.push(t);
+                }
+                else{
+                    w6.push(weather6[i]);
+                }
+            }
+            for (var i = 0; i < weather7.length; i++) {
+                if(w7.length == 0){
+                    var t = new Date (weather7[i]);
+                    w7.push(t);
+                }
+                else{
+                    w7.push(weather7[i]);
+                }
+            }
+            for (var i = 0; i < weather8.length; i++) {
+                if(w8.length == 0){
+                    var t = new Date (weather8[i]);
+                    w8.push(t);
+                }
+                else{
+                    w8.push(weather8[i]);
+                }
+            }
+            for (var i = 0; i < weather9.length; i++) {
+                if(w9.length == 0){
+                    var t = new Date (weather9[i]);
+                    w9.push(t);
+                }
+                else{
+                    w9.push(weather9[i]);
+                }
+            }
+            for (var i = 0; i < weather10.length; i++) {
+                if(w10.length == 0){
+                    var t = new Date (weather10[i]);
+                    w10.push(t);
+                }
+                else{
+                    w10.push(weather10[i]);
+                }
+            };
+            var label_list = {{ label_list|safe }};
+
+            var g = new Dygraph(
+              // containing div
+              document.getElementById("weather-chart"),
+              [
+                w1,w2,w3,w4,w5,w6,w7,w8,w9,w10
+              ],
+              {
+                labels: label_list.slice(),
+                stackedGraph: false,
+                axisLabelWidth: 65,
+                highlightCircleSize: 2,
+                strokeWidth: 1,
+                highlightSeriesOpts: {
+                  strokeWidth: 3,
+                  strokeBorderWidth: 1,
+                  highlightCircleSize: 5,
+                }
+              }
+
+            );
+
+            var onclick = function(ev) {
+              if (g.isSeriesLocked()) {
+                g.clearSelection();
+              } else {
+                g.setSelection(g.getSelection(), g.getHighlightSeries(), true);
+              }
+            };
+
+            g.updateOptions({clickCallback: onclick}, true);
+
+
+        });
+
+
+    </script>
+
+
+
+<style>
+    body.DTTT_Print {
+        background: #fff;
+
+    }
+    .DTTT_Print #page-wrapper {
+        margin: 0;
+        background:#fff;
+    }
+
+    button.DTTT_button, div.DTTT_button, a.DTTT_button {
+        border: 1px solid #e7eaec;
+        background: #fff;
+        color: #676a6c;
+        box-shadow: none;
+        padding: 6px 8px;
+    }
+    button.DTTT_button:hover, div.DTTT_button:hover, a.DTTT_button:hover {
+        border: 1px solid #d2d2d2;
+        background: #fff;
+        color: #676a6c;
+        box-shadow: none;
+        padding: 6px 8px;
+    }
+
+    .dataTables_filter label {
+        margin-right: 5px;
+
+    }
+</style>
+</body>
+
+</html>

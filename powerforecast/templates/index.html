@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add Your favicon here -->
+    <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico">
+    <title>Observ Commodities</title>
+
+    {% load endless %}
+    {% load humanize %}
+    {% load static %}
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Morris -->
+    <link href="{{ STATIC_URL }}css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/animate.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="wrapper">
+      <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+          <ul class="nav" id="side-menu">
+            <li class="nav-header">
+              <div class="dropdown profile-element">
+                <span>
+                  <h2> Observ Commodities </h2>
+                </span>
+              </div>
+            </li>
+            <li>
+              <a href="{% url 'wheel' %}"><i class="fa fa-bullseye"></i> <span class="nav-label">Training Wheel</span></a>
+            </li>
+            <li class="active">
+              <a href="{% url 'index' %}"><i class="fa fa-lightbulb-o"></i> <span class="nav-label">Power Demand Forecast</span> </a>
+            </li>
+            <li>
+              <a href="{% url 'fcchange' %}"><i class="fa fa-gears"></i> <span class="nav-label">Forecast Change</span></a>
+            </li>
+            <li>
+              <a href="{% url 'nearterm' %}"><i class="fa fa-fire"></i> <span class="nav-label">Near-term Estimates</span> </a>
+            </li>
+            <li>
+              <a href="{% url 'risk' %}"><i class="fa fa-sliders"></i> <span class="nav-label">Risk Distribution</span> </a>
+            </li>
+            <li>
+              <a href="{% url 'download' %}"><i class="fa fa-cloud-download"></i> <span class="nav-label">Data Download</span></a>
+            </li>
+            <li>
+              <a href="{% url 'upload' %}"><i class="fa fa-upload"></i> <span class="nav-label">Price Scenerios</span> </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+          <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="ibox-title">
+              <h5>Power Burn Forecast</h5>
+              <div class="ibox-tools">
+                <a href="mailto:wchien@observcmd.com?Subject=Something%20is%20broken!">
+                <i class="fa fa-ambulance"></i> Something Broken? <i class="fa fa-medkit"></i>
+                </a>
+                <a href="{% url 'logout' %}">
+                <i class="fa fa-sign-out"></i> Log out
+                </a>
+              </div>
+            </div>
+          </nav>
+        </div>
+
+        <div class="row  border-bottom white-bg dashboard-header">
+        <div class="col-sm-12">
+          <!--<h2>Comparison to Previous Forecasts</h2>-->
+          <div class="panel blank-panel">
+            <!--<div class="panel-heading">-->
+            <!--<div class="panel-title m-b-md"><h4>Blank Panel with text tabs</h4></div>-->
+            <div class="panel-options">
+              <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-1">Lower 48</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-2">East</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-3">Midwest</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-4">Pacific</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-5">South Central</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-6">Mountains</a></li>
+              </ul>
+            </div>
+            <!--</div>-->
+            <div class="panel-body">
+              <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                  <div class="flot-chart dashboard-chart">
+                    <div class="flot-chart-content" id="lower48-chart"></div>
+                  </div>
+                </div>
+                <div id="tab-2" class="tab-pane">
+                  <div class="flot-chart dashboard-chart">
+                    <div class="flot-chart-content" id="east-chart"></div>
+                  </div>
+                </div>
+                <!--end of tab2-->
+                <div id="tab-3" class="tab-pane">
+                  <div class="flot-chart dashboard-chart">
+                    <div class="flot-chart-content" id="midwest-chart"></div>
+                  </div>
+                </div>
+                <!--end of tab3-->
+                <div id="tab-4" class="tab-pane">
+                  <div class="flot-chart dashboard-chart">
+                    <div class="flot-chart-content" id="pacfic-chart"></div>
+                  </div>
+                </div>
+                <!--end of tab4-->
+                <div id="tab-5" class="tab-pane">
+                  <div class="flot-chart dashboard-chart">
+                    <div class="flot-chart-content" id="southcentral-chart"></div>
+                  </div>
+                </div>
+                <!--end of tab5-->
+                <div id="tab-6" class="tab-pane">
+                  <div class="flot-chart dashboard-chart">
+                    <div class="flot-chart-content" id="mountains-chart"></div>
+                  </div>
+                </div>
+                <!--end of tab6-->
+              </div>
+              <!--end of tab content-->
+            </div>
+            <!--end of panel body-->
+          </div>
+          <!--end of panel-->
+        </div>
+        </div>
+
+        <!--end row border-bottom-->
+        <div class="wrapper wrapper-content animated fadeInRight">
+          <div class="row">
+            <!--start of second row-->
+            <div class="col-lg-6">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5>Current Estimates with 15-day Forecast (mmcf/d)</h5>
+                </div>
+                <div class="ibox-content">
+                  <div class="flot-chart">
+                    <div class="flot-chart-content" id="flot-line-chart-current"></div>
+                  </div>
+                </div>
+                <!--end of ibox content-->
+              </div>
+              <!--end of ibox -->
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Total Summer Power Burn (bcf)</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <small class="stats-label">This Summer</small>
+                            <!-- <h4>236 321.80</h4> -->
+                            <h4>{{this_summer|floatformat:"0"|intcomma}}</h4>
+                        </div>
+
+                        <div class="col-xs-3">
+                            <small class="stats-label">2014 Summer</small>
+                            <!-- <h4>46.11%</h4> -->
+                            <!-- <h4>5099.83</h4> -->
+                            <h4>{{summer_2014|floatformat:"0"|intcomma}}</h4>
+                        </div>
+                        <div class="col-xs-3">
+                            <small class="stats-label">2013 Summer</small>
+                            <!-- <h4>432.021</h4> -->
+                            <!-- <h4>5076.05</h4> -->
+                            <h4>{{summer_2013|floatformat:"0"|intcomma}}</h4>
+                        </div>
+                        <div class="col-xs-3">
+                            <small class="stats-label">2012 Summer</small>
+                            <!-- <h4>432.021</h4> -->
+                            <!-- <h4>5076.05</h4> -->
+                            <h4>{{summer_2012|floatformat:"0"|intcomma}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!--end of col-lg-6 -->
+            <div class="col-lg-6">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5>Commentary</h5>
+                </div>
+
+
+                <div class="ibox-content endless_page_template">
+
+                  {% include page_template %}
+
+
+                </div><!--end ibox-content-->
+
+
+
+              </div>
+            </div>
+            <!--end of col-lg-6 -->
+
+
+
+          </div>
+          <!--end of second row-->
+        </div>
+        <!--end wrapper-content-->
+
+        <div class="footer">
+          <div class="pull-right">
+            <strong>Copyright</strong> Observ Commodities &copy; 2015
+          </div>
+        </div>
+        <!--end footer-->
+      </div>
+      <!--end page wrapper-->
+    </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{{ STATIC_URL }}js/jquery-2.1.1.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/jeditable/jquery.jeditable.js"></script>
+    <!-- Flot -->
+    <script src="{{ STATIC_URL }}js/plugins/flot/jquery.flot.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/flot/jquery.flot.pie.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/flot/jquery.flot.symbol.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/flot/curvedLines.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/flot/jquery.flot.time.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="{{ STATIC_URL }}js/inspinia.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/pace/pace.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="{{ STATIC_URL }}js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+<script src="{% static 'js/endless-pagination.js' %}"></script>
+<script type="text/javascript">
+    $.endlessPaginate({
+        paginateOnScroll: true,
+        paginateOnScrollMargin: 20
+    });
+</script>
+
+
+    <script>
+        $(document).ready(function() {
+
+          var us_m_forecast = {{us_m_forecast}}
+          var us_m_burn = {{us_m_burn}}
+          $("#lower48-chart").length && $.plot($("#lower48-chart"), [{
+            data: us_m_forecast,
+            label: "This year (mmcf/d)"
+          }, {
+            data: us_m_burn,
+            label: "Last year (mmcf/d)"
+          }],
+          {
+          series: {
+            lines: {
+              show: true,
+              fill: true
+            },
+            points: {
+              radius: 2,
+              show: true
+            },
+            shadowSize: 2
+          },
+          xaxes: [{
+            mode: 'time'
+          }],
+          yaxes: [{
+          }],
+          legend: {
+            position: 'nw'
+          },
+          colors: ["#1ab394","#404667"],
+          grid: {
+            color: "#999999",
+            hoverable: true,
+            clickable: true,
+            tickColor: "#D4D4D4",
+            borderWidth:0,
+            hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+          },
+          tooltip: true,
+          tooltipOpts: {
+            content: "%s for %x was %y",
+            xDateFormat: "20%y-%m",
+
+            onHover: function(flotItem, $tooltipEl) {
+              // console.log(flotItem, $tooltipEl);
+            }
+          }
+
+        }
+        );
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if ($(e.target).attr('href') == "#tab-2")
+            {
+                var east_m_forecast = {{east_m_forecast}}
+                var east_m_burn = {{east_m_burn}}
+                $("#east-chart").length && $.plot($("#east-chart"), [{
+                  data: east_m_forecast,
+                  label: "This year (mmcf/d)"
+                }, {
+                  data: east_m_burn,
+                  label: "Last year (mmcf/d)"
+                }],
+                {
+                  series: {
+                    lines: {
+                      show: true,
+                      fill: true
+                    },
+                    points: {
+                      radius: 2,
+                      show: true
+                    },
+                    shadowSize: 2
+                  },
+                  xaxes: [{
+                    mode: 'time'
+                  }],
+                  yaxes: [{
+                  }],
+                  legend: {
+                    position: 'nw'
+                  },
+                  colors: ["#1ab394","#404667"],
+                  grid: {
+                    color: "#999999",
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#D4D4D4",
+                    borderWidth:0,
+                    hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                  },
+                  tooltip: true,
+                  tooltipOpts: {
+                    content: "%s for %x was %y",
+                    xDateFormat: "20%y-%m",
+
+                    onHover: function(flotItem, $tooltipEl) {
+                      // console.log(flotItem, $tooltipEl);
+                    }
+                  }
+
+                }
+              );
+            }
+
+
+            if ($(e.target).attr('href') == "#tab-3")
+            {
+                var midwest_m_forecast = {{midwest_m_forecast}}
+                var midwest_m_burn = {{midwest_m_burn}}
+                $("#midwest-chart").length && $.plot($("#midwest-chart"), [{
+                  data: midwest_m_forecast,
+                  label: "This year (mmcf/d)"
+                }, {
+                  data: midwest_m_burn,
+                  label: "Last year (mmcf/d)"
+                }],
+                {
+                  series: {
+                    lines: {
+                      show: true,
+                      fill: true
+                    },
+                    points: {
+                      radius: 2,
+                      show: true
+                    },
+                    shadowSize: 2
+                  },
+                  xaxes: [{
+                    mode: 'time'
+                  }],
+                  yaxes: [{
+                  }],
+                  legend: {
+                    position: 'nw'
+                  },
+                  colors: ["#1ab394","#404667"],
+                  grid: {
+                    color: "#999999",
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#D4D4D4",
+                    borderWidth:0,
+                    hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                  },
+                  tooltip: true,
+                  tooltipOpts: {
+                    content: "%s for %x was %y",
+                    xDateFormat: "20%y-%m",
+
+                    onHover: function(flotItem, $tooltipEl) {
+                      // console.log(flotItem, $tooltipEl);
+                    }
+                  }
+
+                }
+              );
+            }
+
+
+
+
+
+            if ($(e.target).attr('href') == "#tab-4")
+            {
+                var pacific_m_forecast = {{pacific_m_forecast}}
+                var pacific_m_burn = {{pacific_m_burn}}
+                $("#pacfic-chart").length && $.plot($("#pacfic-chart"), [{
+                  data: pacific_m_forecast,
+                  label: "This year (mmcf/d)"
+                }, {
+                  data: pacific_m_burn,
+                  label: "Last year (mmcf/d)"
+                }],
+                {
+                  series: {
+                    lines: {
+                      show: true,
+                      fill: true
+                    },
+                    points: {
+                      radius: 2,
+                      show: true
+                    },
+                    shadowSize: 2
+                  },
+                  xaxes: [{
+                    mode: 'time'
+                  }],
+                  yaxes: [{
+                  }],
+                  legend: {
+                    position: 'nw'
+                  },
+                  colors: ["#1ab394","#404667"],
+                  grid: {
+                    color: "#999999",
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#D4D4D4",
+                    borderWidth:0,
+                    hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                  },
+                  tooltip: true,
+                  tooltipOpts: {
+                    content: "%s for %x was %y",
+                    xDateFormat: "20%y-%m",
+
+                    onHover: function(flotItem, $tooltipEl) {
+                      // console.log(flotItem, $tooltipEl);
+                    }
+                  }
+
+                }
+              );
+            }
+
+
+
+
+            if ($(e.target).attr('href') == "#tab-5")
+            {
+                var southcentral_m_forecast = {{southcentral_m_forecast}}
+                var southcentral_m_burn = {{southcentral_m_burn}}
+                $("#southcentral-chart").length && $.plot($("#southcentral-chart"), [{
+                    data: southcentral_m_forecast,
+                    label: "This year (mmcf/d)"
+                  }, {
+                    data: southcentral_m_burn,
+                    label: "Last year (mmcf/d)"
+                  }],
+                {
+                  series: {
+                    lines: {
+                      show: true,
+                      fill: true
+                    },
+                    points: {
+                      radius: 0,
+                      show: true
+                    },
+                    shadowSize: 2
+                  },
+                  xaxes: [{
+                      mode: 'time'
+                    }],
+                    yaxes: [{
+                    }],
+                    legend: {
+                      position: 'nw'
+                    },
+                    colors: ["#1ab394","#404667"],
+                    grid: {
+                      color: "#999999",
+                      hoverable: true,
+                      clickable: true,
+                      tickColor: "#D4D4D4",
+                      borderWidth:0,
+                      hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                      content: "%s for %x was %y",
+                      xDateFormat: "20%y-%m",
+
+                      onHover: function(flotItem, $tooltipEl) {
+                        // console.log(flotItem, $tooltipEl);
+                      }
+                    }
+
+                  }
+                );
+            }
+
+
+
+
+            if ($(e.target).attr('href') == "#tab-6")
+            {
+                var mountain_m_forecast = {{mountain_m_forecast}}
+                var mountain_m_burn = {{mountain_m_burn}}
+                $("#mountains-chart").length && $.plot($("#mountains-chart"), [{
+                    data: mountain_m_forecast,
+                    label: "This year (mmcf/d)"
+                  }, {
+                    data: mountain_m_burn,
+                    label: "Last year (mmcf/d)"
+                  }],
+                {
+                series: {
+                  lines: {
+                    show: true,
+                    fill: true
+                  },
+                  points: {
+                    radius: 2,
+                    show: true
+                  },
+                  shadowSize: 2
+                },
+                    xaxes: [{
+                      mode: 'time'
+                    }],
+                    yaxes: [{
+                    }],
+                    legend: {
+                      position: 'nw'
+                    },
+                    colors: ["#1ab394","#404667"],
+                    grid: {
+                      color: "#999999",
+                      hoverable: true,
+                      clickable: true,
+                      tickColor: "#D4D4D4",
+                      borderWidth:0,
+                      hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                      content: "%s for %x was %y",
+                      xDateFormat: "20%y-%m",
+
+                      onHover: function(flotItem, $tooltipEl) {
+                        // console.log(flotItem, $tooltipEl);
+                      }
+                    }
+
+                  }
+                );
+            }
+        });
+
+
+
+
+      var us_d_forecast = {{ us_d_forecast }}
+      var us_d_eia = {{ us_d_eia }}
+      function doPlotCurrent(position) {
+        $.plot($("#flot-line-chart-current"), [{
+          data: us_d_forecast,
+          label: "This year"
+        }, {
+          data: us_d_eia,
+          label: "Last year"
+        }], {
+          xaxes: [{
+            mode: 'time'
+          }],
+          yaxes: [{
+            min: 15000
+          }],
+          legend: {
+            position: 'nw'
+          },
+          colors: ["#1ab394","#404667"],
+          grid: {
+            color: "#999999",
+            hoverable: true,
+            clickable: true,
+            tickColor: "#D4D4D4",
+            borderWidth:0,
+            hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+          },
+          tooltip: true,
+          tooltipOpts: {
+            content: "%s for %x was %y",
+            xDateFormat: "20%y-%m",
+
+            onHover: function(flotItem, $tooltipEl) {
+              // console.log(flotItem, $tooltipEl);
+            }
+          }
+
+        });
+      }
+
+      doPlotCurrent("right");
+
+      $("button").click(function() {
+        doPlot($(this).text());
+      });
+
+
+      });
+    </script>
+
+  </body>
+</html>
